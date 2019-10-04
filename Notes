@@ -1,0 +1,26 @@
+2019/05/27 Calling stemma
+
+Here's how I'm calling stemma these days. Basically, I've set up stemma by
+default to do N/2 simulated anneals at 2*N temperature, followed by another
+simulated anneal of the best at N^2 temperation. Then, it's followed by a
+ratchet of the best at N^3 repetitions. This last step takes weeks at N>100
+(N = number of MSS), and it's serial, and for the ratchet I can't see the
+partial results.
+
+This doesn't take advantage of the parallel cores on the system. So I've
+developed a set of scripts do_stemma, do_ratchet, do_anneal to launch a set
+of 10 of them in parallel (there are 12 effective cores on my system). To
+trade-off exploration strategies, I start off with two or three ./do_anneal
+99999 until it looks like new winners are only found at a few iterations
+into a new temperature. In this case, I switch to ./do_ratchet 99999. These
+sets take about 8 hours for N = 138. And I nohup them to do in the background.
+
+For each set, I check nohup.out to see if a better solution was found. If so,
+I run ./do_soln, which does the bootstrap and renames the result. Then I
+create a direction with the score as the name and copy the input and solution
+files into it. Then I copy the SOLN cache to the worst solution cache of the
+set and re-run 'nohup ./do_ratchet 99999' until all solution caches converge
+to the same winner. This will allow more and more iterations of the ratchet
+to attack the best solution while still permitting some exploration of the
+with somewhat worse solutions. All told, I can take a few weeks of constant
+searching. And I can always start all over and try again in the background.

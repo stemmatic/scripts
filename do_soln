@@ -1,0 +1,4 @@
+mss=$(MSS:-basename *.tx .tx)
+stemma $mss b
+mv {b,SOLN}.BOOT
+soln $mss SOLN

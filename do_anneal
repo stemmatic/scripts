@@ -1,0 +1,5 @@
+mss=$(MSS:-basename *.tx .tx)
+for tag in 00 01 02 03 04 05 06 07 08 09
+do
+	TAG=$tag stemma $mss a $1 &
+done

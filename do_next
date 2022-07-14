@@ -1,0 +1,4 @@
+rm nohup.out
+touch START 
+echo do_ratchet ${1:-99999}
+nohup do_ratchet ${1:-99999}

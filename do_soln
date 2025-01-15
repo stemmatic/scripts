@@ -1,4 +1,5 @@
-mss=$(MSS:-basename *.tx .tx)
+mss=$(basename *.tx .tx)
+soln $mss SOLN
 stemma $mss b
 mv {b,SOLN}.BOOT
-soln $mss SOLN
+grep count SOLN.BOOT | awk '{s+=$2;n+=1}END{print s/n}' 

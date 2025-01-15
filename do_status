@@ -1,0 +1,4 @@
+for tag in 00 01 02 03 04 05 06 07 08 09
+do
+	chomp <nohup.out | grep ^$tag | tail -1
+done
